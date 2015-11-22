@@ -3,11 +3,10 @@ import numpy as np
 import os
 import matplotlib.pyplot as plt
 
-
 # importando los datos
-file_path = os.path.join('data', 'hubble_original.dat')
-distancias = np.loadtxt(fname=file_path, usecols=(0,))
-velocidades = np.loadtxt(fname=file_path, usecols=(1,))
+file_path = os.path.join('data', 'SNIa.dat')
+distancias = np.loadtxt(fname=file_path, usecols=(1,))
+velocidades = np.loadtxt(fname=file_path, usecols=(2,))
 
 # H0 = suma(vi*di) / suma(di)
 numerador = 0
@@ -15,7 +14,7 @@ denominador = 0
 for i in range(len(distancias)):
     numerador += velocidades[i] * distancias[i]
     denominador += distancias[i] * distancias[i]
-H0 = numerador / denominador
+H0 = (numerador / denominador)**-1
 print H0
 
 # buscando intervalo de confianza al 95
@@ -32,7 +31,7 @@ for i in range(Nboot):
     for j in s:
         num += velocidades[j] * distancias[j]
         den += distancias[j] * distancias[j]
-    values[i] = np.mean(num / den)
+    values[i] = np.mean((num / den)**-1)
 
 values_ordenados = np.sort(values)
 limite_bajo = values_ordenados[int(Nboot * 0.03)]
@@ -46,4 +45,4 @@ plt.hist(values, bins=50)
 plt.axvline(H0, color='r')
 plt.draw()
 plt.show()
-plt.savefig('bootstrap_p1.png')
+plt.savefig('bootstrap_p2.png')
