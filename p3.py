@@ -26,7 +26,7 @@ for i in range(Nmc):
 
 [a, b] = np.polyfit(mean_values_i, mean_values_z, 1)
 [c, d] = np.polyfit(flujo_i, flujo_z, 1)
-x = np.linspace(0,450,1000)
+#x = np.linspace(0,450,1000)
 
 fig = plt.figure(1)
 fig.clf()
