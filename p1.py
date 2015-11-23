@@ -55,14 +55,21 @@ for i in range(Nboot):
 values_ord = np.sort(values_promedio)
 limite_bajo = values_ord[int(Nboot * 0.03)]
 limite_alto = values_ord[int(Nboot * 0.98)]
-print "El intervalo de confianza al 95% es: [{}:{}]".format(limite_bajo, limite_alto)
+print "El intervalo de confianza al 95% es: [{}:{}]".format(limite_bajo,
+                                                            limite_alto)
 
 
 # plot 1
 fig = plt.figure(1)
 fig.clf()
-plt.hist(values_promedio, bins=50)
-plt.axvline((H0_1+H0_2)*0.5, color='r')
+plt.hist(values_promedio, bins=50, facecolor='g', alpha=0.5)
+plt.axvline((H0_1+H0_2)*0.5, color='r', label="Mejor valor encontrado")
+plt.axvline(limite_bajo, color='b',
+            label="Extremos intervalo de confianza al 95$\%$")
+plt.axvline(limite_alto, color='b')
+plt.title("Histograma $H_0$")
+plt.legend(fontsize=11)
+plt.ylim(0, 50)
 plt.draw()
 plt.show()
 plt.savefig('bootstrap_p1.png')

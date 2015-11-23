@@ -25,41 +25,6 @@ for i in range(Nmc):
 
 a, b = np.polyfit(flujo_i, flujo_z, 1)
 
-# plot 1
-fig1 = plt.figure(1)
-fig1.clf()
-plt.hist(coefs_posicion, bins=30, facecolor='g', alpha=0.5)
-plt.axvline(b, color ='r')
-plt.title('Histograma coeficientes de posicion')
-plt.draw()
-plt.show()
-plt.savefig('histo_p1_1.png')
-
-# plot 2
-fig2 = plt.figure(2)
-fig2.clf()
-plt.hist(pendientes, bins=30, facecolor='g', alpha=0.5)
-plt.axvline(a, color ='r')
-plt.title('Histograma pendientes')
-plt.draw()
-plt.show()
-plt.savefig('histo_p1_2.png')
-
-# plot 3
-x = np.linspace(-100,500,1000)
-fig3 = plt.figure(3)
-fig3.clf()
-plt.errorbar(flujo_i, flujo_z, xerr=error_i, yerr=error_z, fmt="o",
-             label="Datos ", color='g', alpha=0.5)
-plt.plot(x, a * x + b, color='r', label="Ajuste lineal")
-plt.xlabel("Flujo banda i [$10^{-6}Jy$]")
-plt.ylabel("Flujo banda z [$10^{-6}Jy$]")
-plt.legend(loc=2)
-plt.plot()
-plt.draw()
-plt.show()
-plt.savefig('ajuste_p1.png')
-
 
 # calculando intervalo de confianza
 pendientes_ord = np.sort(pendientes)
@@ -74,3 +39,47 @@ print """El intervalo de confianza al
 print """El intervalo de confianza al
       95% para el coef de posicion es: [{}:{}]""".format(limite_bajo_2,
                                                          limite_alto_2)
+
+# plot 1
+fig1 = plt.figure(1)
+fig1.clf()
+plt.hist(coefs_posicion, bins=30, facecolor='g', alpha=0.5)
+plt.axvline(b, color='r', label="Valor encontrado con ajuste lineal")
+plt.axvline(limite_bajo_2, color='b',
+            label="Extremos intervalo de confianza al 95$\%$")
+plt.axvline(limite_alto_2, color='b', linewidth=1)
+plt.title('Histograma coeficientes de posicion')
+plt.legend(fontsize=11)
+plt.draw()
+plt.show()
+plt.savefig('histo_p3_1.png')
+
+# plot 2
+fig2 = plt.figure(2)
+fig2.clf()
+plt.hist(pendientes, bins=30, facecolor='g', alpha=0.5)
+plt.axvline(a, color='r', label="Valor encontrado con ajuste lineal")
+plt.axvline(limite_bajo_1, color='b',
+            label="Extremos intervalo de confianza al 95$\%$")
+plt.axvline(limite_alto_1, color='b')
+plt.title('Histograma pendientes')
+plt.ylim(0, 2700)
+plt.legend(loc=2, fontsize=11)
+plt.draw()
+plt.show()
+plt.savefig('histo_p3_2.png')
+
+# plot 3
+x = np.linspace(-100, 500, 1000)
+fig3 = plt.figure(3)
+fig3.clf()
+plt.errorbar(flujo_i, flujo_z, xerr=error_i, yerr=error_z, fmt="o",
+             label="Datos ", color='g', alpha=0.5)
+plt.plot(x, a * x + b, color='r', label="Ajuste lineal")
+plt.xlabel("Flujo banda i [$10^{-6}Jy$]")
+plt.ylabel("Flujo banda z [$10^{-6}Jy$]")
+plt.legend(loc=2)
+plt.plot()
+plt.draw()
+plt.show()
+plt.savefig('ajuste_p3.png')
