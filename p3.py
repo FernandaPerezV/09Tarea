@@ -23,34 +23,42 @@ for i in range(Nmc):
     muestra_z = flujo_z + error_z * r
     pendientes[i], coefs_posicion[i] = np.polyfit(muestra_i, muestra_z, 1)
 
+a, b = np.polyfit(flujo_i, flujo_z, 1)
 
 # plot 1
 fig1 = plt.figure(1)
 fig1.clf()
-plt.hist(coefs_posicion, bins=30)
+plt.hist(coefs_posicion, bins=30, facecolor='g', alpha=0.5)
+plt.axvline(b, color ='r')
+plt.title('Histograma coeficientes de posicion')
 plt.draw()
 plt.show()
+plt.savefig('histo_p1_1.png')
 
 # plot 2
 fig2 = plt.figure(2)
 fig2.clf()
-plt.hist(pendientes, bins=30)
+plt.hist(pendientes, bins=30, facecolor='g', alpha=0.5)
+plt.axvline(a, color ='r')
+plt.title('Histograma pendientes')
 plt.draw()
 plt.show()
+plt.savefig('histo_p1_2.png')
 
 # plot 3
-a, b = np.polyfit(flujo_i, flujo_z, 1)
 x = np.linspace(-100,500,1000)
 fig3 = plt.figure(3)
 fig3.clf()
 plt.errorbar(flujo_i, flujo_z, xerr=error_i, yerr=error_z, fmt="o",
-                 label="bla")
-plt.plot(x, a * x + b)
+             label="Datos ", color='g', alpha=0.5)
+plt.plot(x, a * x + b, color='r', label="Ajuste lineal")
+plt.xlabel("Flujo banda i [$10^{-6}Jy$]")
+plt.ylabel("Flujo banda z [$10^{-6}Jy$]")
+plt.legend(loc=2)
 plt.plot()
 plt.draw()
 plt.show()
-
-
+plt.savefig('ajuste_p1.png')
 
 
 # calculando intervalo de confianza
@@ -61,8 +69,8 @@ limite_alto_1 = pendientes_ord[int(Nmc * 0.98)]
 limite_bajo_2 = coefs_posicion_ord[int(Nmc * 0.03)]
 limite_alto_2 = coefs_posicion_ord[int(Nmc * 0.98)]
 print """El intervalo de confianza al
-             95% para la pendiente es: [{}:{}]""".format(limite_bajo_1,
-                                                         limite_alto_1)
+      95% para la pendiente es: [{}:{}]""".format(limite_bajo_1,
+                                                  limite_alto_1)
 print """El intervalo de confianza al
-             95% para el coef de posicion es: [{}:{}]""".format(limite_bajo_2,
-                                                                limite_alto_2)
+      95% para el coef de posicion es: [{}:{}]""".format(limite_bajo_2,
+                                                         limite_alto_2)
