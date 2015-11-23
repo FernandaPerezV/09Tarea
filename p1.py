@@ -53,8 +53,8 @@ for i in range(Nboot):
     values_promedio[i] = (values_1[i] + values_2[i]) * 0.5
 
 values_ord = np.sort(values_promedio)
-limite_bajo = values_ord[int(Nboot * 0.03)]
-limite_alto = values_ord[int(Nboot * 0.98)]
+limite_bajo = values_ord[int(Nboot * 0.025)]
+limite_alto = values_ord[int(Nboot * 0.975)]
 print "El intervalo de confianza al 95% es: [{}:{}]".format(limite_bajo,
                                                             limite_alto)
 

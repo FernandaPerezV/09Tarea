@@ -29,10 +29,10 @@ a, b = np.polyfit(flujo_i, flujo_z, 1)
 # calculando intervalo de confianza
 pendientes_ord = np.sort(pendientes)
 coefs_posicion_ord = np.sort(coefs_posicion)
-limite_bajo_1 = pendientes_ord[int(Nmc * 0.03)]
-limite_alto_1 = pendientes_ord[int(Nmc * 0.98)]
-limite_bajo_2 = coefs_posicion_ord[int(Nmc * 0.03)]
-limite_alto_2 = coefs_posicion_ord[int(Nmc * 0.98)]
+limite_bajo_1 = pendientes_ord[int(Nmc * 0.025)]
+limite_alto_1 = pendientes_ord[int(Nmc * 0.975)]
+limite_bajo_2 = coefs_posicion_ord[int(Nmc * 0.025)]
+limite_alto_2 = coefs_posicion_ord[int(Nmc * 0.975)]
 print """El intervalo de confianza al
       95% para la pendiente es: [{}:{}]""".format(limite_bajo_1,
                                                   limite_alto_1)
