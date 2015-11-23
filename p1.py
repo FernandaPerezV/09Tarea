@@ -4,6 +4,10 @@ import os
 import matplotlib.pyplot as plt
 
 
+def biseccion(a1, a2):
+    return (a1 * a2 - 1 + np.sqrt((1+a1**2) * (1+a2**2))) / (a1+a2)
+
+
 # importando los datos
 file_path = os.path.join('data', 'hubble_original.dat')
 distancias = np.loadtxt(fname=file_path, usecols=(0,))
@@ -35,7 +39,7 @@ N = len(distancias)
 Nboot = 500
 values_1 = np.zeros(Nboot)
 values_2 = np.zeros(Nboot)
-values_promedio = np.zeros(Nboot)
+values_bis = np.zeros(Nboot)
 
 for i in range(Nboot):
     s = np.random.randint(low=0, high=N, size=N)
@@ -50,20 +54,32 @@ for i in range(Nboot):
         den_2 += velocidades[j] * distancias[j]
     values_1[i] = np.mean(num_1 / den_1)
     values_2[i] = np.mean(num_2 / den_2)
-    values_promedio[i] = (values_1[i] + values_2[i]) * 0.5
+    values_bis[i] = biseccion(values_1[i], values_2[i])
 
-values_ord = np.sort(values_promedio)
+values_ord = np.sort(values_bis)
 limite_bajo = values_ord[int(Nboot * 0.025)]
 limite_alto = values_ord[int(Nboot * 0.975)]
 print "El intervalo de confianza al 95% es: [{}:{}]".format(limite_bajo,
                                                             limite_alto)
-
-
 # plot 1
-fig = plt.figure(1)
-fig.clf()
-plt.hist(values_promedio, bins=50, facecolor='g', alpha=0.5)
-plt.axvline((H0_1+H0_2)*0.5, color='r', label="Mejor valor encontrado")
+x=np.linspace(0,2,100)
+fig1 = plt.figure(1)
+fig1.clf()
+plt.plot(distancias, velocidades, 'o')
+plt.plot(x, x*H0_1, color='r', label="Caso 1")
+plt.plot(x, x*H0_2, color='g', label="Caso 2")
+plt.plot(x, x*np.mean(values_bis), color='y', label="Biseccion")
+plt.legend(loc=2)
+plt.draw()
+plt.show()
+plt.savefig('datos_y_rectas_p1.png')
+
+
+# plot 2
+fig2 = plt.figure(1)
+fig2.clf()
+plt.hist(values_bis, bins=50, facecolor='g', alpha=0.5)
+plt.axvline(biseccion(H0_1, H0_2), color='r', label="Mejor valor encontrado")
 plt.axvline(limite_bajo, color='b',
             label="Extremos intervalo de confianza al 95$\%$")
 plt.axvline(limite_alto, color='b')
@@ -72,6 +88,4 @@ plt.legend(fontsize=11)
 plt.ylim(0, 50)
 plt.draw()
 plt.show()
-plt.savefig('bootstrap_p1.png')
-
-print (H0_1+H0_2)*0.5
+plt.savefig('histograma_p1.png')
