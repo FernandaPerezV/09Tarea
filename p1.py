@@ -37,8 +37,6 @@ print H0_2
 np.random.seed(1234)
 N = len(distancias)
 Nboot = 500
-values_1 = np.zeros(Nboot)
-values_2 = np.zeros(Nboot)
 values_bis = np.zeros(Nboot)
 
 for i in range(Nboot):
@@ -52,9 +50,9 @@ for i in range(Nboot):
         den_1 += distancias[j] * distancias[j]
         num_2 += velocidades[j] * velocidades[j]
         den_2 += velocidades[j] * distancias[j]
-    values_1[i] = np.mean(num_1 / den_1)
-    values_2[i] = np.mean(num_2 / den_2)
-    values_bis[i] = biseccion(values_1[i], values_2[i])
+    values_1 = np.mean(num_1 / den_1)
+    values_2 = np.mean(num_2 / den_2)
+    values_bis[i] = biseccion(values_1, values_2)
 
 values_ord = np.sort(values_bis)
 limite_bajo = values_ord[int(Nboot * 0.025)]
