@@ -10,25 +10,25 @@ def biseccion(a1, a2):
 
 # importando los datos
 file_path = os.path.join('data', 'SNIa.dat')
-distancias = np.loadtxt(fname=file_path, usecols=(1,))
-velocidades = np.loadtxt(fname=file_path, usecols=(2,))
+distancias = np.loadtxt(fname=file_path, usecols=(2,))
+velocidades = np.loadtxt(fname=file_path, usecols=(1,))
 
-# 1 / H0_1 = suma(vi*di) / suma(di)
+# H0_1 = suma(vi*di) / suma(di)
 numerador = 0
 denominador = 0
 for i in range(len(distancias)):
     numerador += velocidades[i] * distancias[i]
     denominador += distancias[i] * distancias[i]
-H0_1 = (numerador / denominador)**-1
+H0_1 = (numerador / denominador)
 print H0_1
 
-# 1 / H0_2 = suma(di^2) / suma(vi/di)
+# H0_2 = suma(vi^2) / suma(vi*di)
 numerador_2 = 0
 denominador_2 = 0
 for i in range(len(distancias)):
     numerador_2 += velocidades[i] * velocidades[i]
     denominador_2 += velocidades[i] * distancias[i]
-H0_2 = (numerador_2 / denominador_2)**-1
+H0_2 = (numerador_2 / denominador_2)
 print H0_2
 
 # buscando intervalo de confianza al 95
@@ -51,8 +51,8 @@ for i in range(Nboot):
         den_1 += distancias[j] * distancias[j]
         num_2 += velocidades[j] * velocidades[j]
         den_2 += velocidades[j] * distancias[j]
-    values_1[i] = np.mean((num_1 / den_1)**-1)
-    values_2[i] = np.mean((num_2 / den_2)**-1)
+    values_1[i] = np.mean(num_1 / den_1)
+    values_2[i] = np.mean(num_2 / den_2)
     values_bis[i] = biseccion(values_1[i], values_2[i])
 
 values_ord = np.sort(values_bis)
@@ -63,12 +63,12 @@ print "El intervalo de confianza al 95% es: [{}:{}]".format(limite_bajo,
 
 
 # plot 1
-x=np.linspace(0,35000,1000)
+x=np.linspace(0,600,1000)
 fig1 = plt.figure(1)
 fig1.clf()
 plt.plot(distancias, velocidades, 'o')
-plt.plot(x, x*(H0_1**-1), color='r', label="Caso 1")
-plt.plot(x, x*(H0_2**-1), color='g', label="Caso 2")
+plt.plot(x, x*(H0_1), color='r', label="Caso 1")
+plt.plot(x, x*(H0_2), color='g', label="Caso 2")
 plt.plot(x, x*(np.mean(values_bis)**-1), color='y', label="Biseccion")
 plt.legend(loc=2)
 plt.draw()

@@ -22,7 +22,7 @@ for i in range(len(distancias)):
 H0_1 = numerador / denominador
 print H0_1
 
-# H0_2 = suma(di^2) / suma(vi/di)
+# H0_2 = suma(vi^2) / suma(vi*di)
 numerador_2 = 0
 denominador_2 = 0
 for i in range(len(distancias)):
