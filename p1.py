@@ -1,3 +1,13 @@
+'''
+Este script lee los datos del archivo hubble_original.dat y calcula la
+constante H0 de Hubble de los maneras: 1) v=H*d 2) v/H=D. Luego utiliza
+el metodo de biseccion para mezclar ambas soluciones.
+Realiza una simulacion de bootstrap para calcular el intervalo de
+confianza al 95%.
+Realiza 2 plots:
+1) Datos + 3 rectas (con los 2 H calculados y en H_biseccion como pendientes)
+2) Histograma para H0.
+'''
 from __future__ import division
 import numpy as np
 import os
@@ -60,14 +70,16 @@ limite_alto = values_ord[int(Nboot * 0.975)]
 print "El intervalo de confianza al 95% es: [{}:{}]".format(limite_bajo,
                                                             limite_alto)
 # plot 1
-x=np.linspace(0,2,100)
+x = np.linspace(0, 2, 100)
 fig1 = plt.figure(1)
 fig1.clf()
-plt.plot(distancias, velocidades, 'o')
+plt.plot(distancias, velocidades, 'o', label="Datos")
 plt.plot(x, x*H0_1, color='r', label="Caso 1")
 plt.plot(x, x*H0_2, color='g', label="Caso 2")
 plt.plot(x, x*np.mean(values_bis), color='y', label="Biseccion")
 plt.legend(loc=2)
+plt.xlabel("Distancias [Mpc]")
+plt.ylabel("Velocidades [km / s]")
 plt.draw()
 plt.show()
 plt.savefig('datos_y_rectas_p1.png')
